@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Samo1596 Online Store | Stylish shopping starts here</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/891/891419.png" type="image/png">
+  <style>
+    :root{
+      --nav-bg:#232f3e;
+      --accent:#ff9900;
+      --btn:#ffa41c;
+      --muted:#6b6b6b;
+      --danger:#b12704;
+      --card-radius:10px;
+      --bg:#f3f4f6;
+      --text:#111827;
+      --card:#fff;
+    }
+    [data-theme="dark"]{
+      --nav-bg:#0b1220;
+      --accent:#f6a21a;
+      --btn:#ffb84d;
+      --muted:#9aa4b2;
+      --danger:#ff6b6b;
+      --bg:#081016;
+      --text:#dbe5e7;
+      --card:#0f1720;
+    }
+     .top-btn, .back-btn {
+      position: fixed;
+      bottom: 20px;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+    .top-btn {
+      right: 20px;
+      background-color: #25D366;
+    }
+    .top-btn:hover {
+      background-color: #1ebe5d;
+    }
+    .back-btn {
+      left: 20px;
+      background-color: #007bff;
+    }
+    .back-btn:hover {
+      background-color: #d49400;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* NAVBAR */
+    .navbar{
+      background:var(--nav-bg);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px 16px;
+      position:sticky;
+      top:0;
+      z-index:999;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      flex-wrap:wrap;
+    }
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--accent);font-size:20px}
+    .logo img{width:36px;height:36px;border-radius:6px;background:#fff;padding:4px}
+    .search-wrap{flex:1;display:flex;gap:8px;min-width:220px}
+    .search-wrap input{width:100%;padding:9px;border-radius:6px 0 0 6px;border:none;outline:none;font-size:15px}
+    .search-wrap button{padding:9px;border:none;border-radius:0 6px 6px 0;background:var(--btn);cursor:pointer;font-weight:700}
+    .nav-icons{display:flex;gap:12px;align-items:center}
+    .icon{font-size:20px;background:transparent;border:0;color:#fff;cursor:pointer}
+
+    /* DARK MODE TOGGLE */
+    .toggle-dark{background:transparent;border:1px solid #f6a21a;padding:6px 10px;border-radius:8px;color:#fff;cursor:pointer;font-weight:700}
+
+    /* CONTAINER & HERO */
+    .container{max-width:1200px;margin:14px auto;padding:0 14px}
+    header.hero{background:linear-gradient(90deg,#0c0c3f 0%, #232f3e 100%);padding:14px;text-align:center;border-radius:8px }
+    #welcome-text{font-size:18px;color:#0b5560;margin-top:6px;font-weight:600}
+
+    /* FILTERS */
+    .filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px;margin:12px 0;background:var(--card);border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+    .filters button{background:transparent;border:1px solid #e5e7eb;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:600}
+    .filters button.active{background:var(--btn);border-color:transparent;color:#111}
+
+    /* PRODUCTS GRID */
+    .products{display:grid;grid-template-columns: repeat(auto-fill, minmax(250px,1fr));gap:18px;margin-top:8px}
+    .product{background:var(--card);border-radius:var(--card-radius);overflow:hidden;box-shadow:0 2px 8px rgba(16,24,40,0.06);transition:transform .18s ease,box-shadow .18s ease;display:flex;flex-direction:column}
+    .product:hover{transform:translateY(-6px);box-shadow:0 10px 25px rgba(16,24,40,0.12)}
+    .img-wrap{position:relative;overflow:hidden}
+    .product img{width:100%;height:220px;object-fit:cover;display:block;cursor:pointer}
+    .badge{position:absolute;left:12px;top:12px;background:var(--accent);color:#111;padding:6px 8px;border-radius:6px;font-weight:700;font-size:13px}
+    .body{padding:12px 14px 16px;flex:1;display:flex;flex-direction:column;gap:8px}
+    h3{margin:0;font-size:16px;color:var(--text);line-height:1.25}
+    .muted{color:var(--muted);font-size:13px}
+    .price{color:var(--danger);font-weight:800;font-size:17px}
+    .actions{margin-top:auto;display:flex;gap:8px;align-items:center}
+    .btn{border:none;padding:9px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+    .btn-order{background:var(--btn);color:#111;flex:1}
+    .btn-cart{background:#e6eef3;color:#111;border:1px solid #d9e7f3}
+
+    /* ADDRESS FORM */
+    .address-form{display:none;padding:12px;background:rgba(0,0,0,0.03);border-top:1px solid rgba(0,0,0,0.04);border-radius:0 0 10px 10px}
+    .address-form input{width:100%;padding:8px 10px;margin:6px 0;border-radius:6px;border:1px solid #dfe7ee;background:#fff}
+    .confirmation-message{display:none;padding:10px;margin-top:10px;border-radius:8px;background:#e6ffed;color:#064e2a;font-weight:600}
+
+    /* DETAILS TOGGLE */
+    .toggle-desc{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:transparent;margin-top:6px;border:1px solid rgba(0,0,0,0.03);cursor:pointer}
+    .product-description{display:none;padding:8px 0;color:var(--text);font-size:14px}
+
+    /* NO RESULTS */
+    #no-results{display:none;padding:20px;text-align:center;font-size:18px;color:#7a0b0b;background:var(--card);border-radius:8px}
+
+    /* FOOTER */
+    footer{background:var(--nav-bg);color:#fff;padding:18px;text-align:center;margin-top:18px;border-top:4px solid #0ea5a4}
+    footer a{color:var(--accent)}
+
+    /* MODAL IMAGE (quick view with carousel) */
+    #quickViewModal{display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px}
+    .modal-card{background:var(--card);width:95%;max-width:900px;border-radius:10px;display:flex;gap:12px;overflow:hidden}
+    .carousel{flex:1;min-width:280px;display:flex;flex-direction:column;align-items:center;padding:12px}
+    .carousel img{width:100%;max-height:420px;object-fit:contain;border-radius:8px}
+    .thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .thumbs img{width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent}
+    .thumbs img.active{border-color:var(--accent)}
+    .modal-info{width:360px;padding:16px;display:flex;flex-direction:column;gap:8px}
+    .modal-info h3{margin:0}
+    .modal-actions{display:flex;gap:8px;margin-top:auto}
+    .close-modal{position:absolute;right:26px;top:18px;color:#fff;font-size:26px;cursor:pointer}
+
+    /* MINI-CART (drawer) */
+    #miniCart{position:fixed;right:0;top:0;height:100%;width:360px;max-width:95%;transform:translateX(110%);background:var(--card);box-shadow:-10px 0 30px rgba(0,0,0,0.2);z-index:2500;padding:14px;transition:transform .25s ease}
+    #miniCart.open{transform:translateX(0)}
+    #miniCart h4{margin:0 0 8px 0}
+    .cart-items{max-height:60vh;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px}
+    .cart-item{display:flex;gap:8px;align-items:center;border-radius:8px;padding:8px;background:rgba(0,0,0,0.02)}
+    .cart-item img{width:64px;height:64px;object-fit:cover;border-radius:6px}
+    .cart-item .meta{flex:1}
+    .cart-item .meta b{display:block}
+    .cart-footer{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+
+    /* responsive */
+    @media (max-width:900px){.modal-info{display:none}.carousel img{max-height:320px}}
+    @media (max-width:600px){.products{grid-template-columns:repeat(2,1fr)}.search-wrap{order:3;width:100%}}
+    @media (max-width:420px){.products{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <div class="navbar">
+    <div class="logo"><img src="shopping-icon.webp" alt="logo"> Samo1596</div>
+
+    <div class="search-wrap">
+      <input id="mainSearch" type="search" placeholder="Search products, brands..." aria-label="Search products">
+      <button onclick="searchFromNavbar()">🔍</button>
+    </div>
+
+    <div class="nav-icons">
+      <button class="toggle-dark" id="darkToggle" onclick="toggleDark()">🌙</button>
+      <button class="icon" title="Cart" onclick="toggleMiniCart()">🛒 <span id="cartCount" style="font-weight:700;margin-left:6px">0</span></button>
+      <a href="help.html"  class="icon" title="Help">💬</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero container">
+    <h1 style="margin:0;font-size:22px;color:#ff9900;">Samo1596 Online Store</h1>
+    <div style="color: whitesmoke;;" id="welcome-text"></div>
+  </header>
+
+  <!-- FILTERS -->
+  <div class="container">
+    <div class="filters" id="filtersBar">
+      <button onclick="filterProducts('all')" class="active">All</button>
+      <button onclick="filterProducts('electronics')">Electronics</button>
+      <button onclick="filterProducts('clothes')">Clothes</button>
+      <button onclick="filterProducts('islam')">Islamic</button>
+      <button onclick="filterProducts('bags')">Bags</button>
+      <button onclick="filterProducts('home')">Home</button>
+      <button onclick="filterProducts('kitchen')">Kitchen</button>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <main class="container">
+    <div class="products" id="product-list">
+
+      <!-- Example product entries - note data-images (comma separated) -->
+      <article class="product" data-category="electronics" data-sku="watch-001" data-images="watch .jpg,watch2.jpg,watch3.jpg">
+        <div class="img-wrap">
+          <img src="watch3.jpg
+          " alt="Smart Watch Series 9" onclick="openQuickView(this)">
+          <div class="badge">Hot</div>
+        </div>
+        <div class="body">
+          <h3>Smart Watch Series 9</h3>
+          <div class="muted">Bluetooth, Fitness tracking</div>
+          <div class="price">Rs. 4,579</div>
+          <div class="toggle-desc" onclick="toggleDescription(this)"><span>Show Details</span> 🔽</div>
+          <div class="product-description"><p>• Material: Metal & Silicone<br>• Battery: 260 mAh • Standby: 4 days</p></div>
+          <div class="actions">
+            <button class="btn btn-order" onclick="showAddressForm(this)">Order Now</button>
+            <button class="btn btn-cart" onclick="addToCart(this)">➕ Add to Cart</button>
+          </div>
+
+          <div class="address-form">
+            <input type="text" placeholder="Your Name" class="name-input">
+            <input type="number" placeholder="Phone Number" class="phone-input">
+            <input type="number" placeholder="Alt Phone (optional)" class="second-phone-input">
+            <input type="text" placeholder="Full Address" class="address-input">
+            <input type="text" placeholder="Landmark / Area" class="landmark-input">
+            <input type="number" placeholder="Quantity" class="quantity-input" value="1" min="1">
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-order" onclick="sendOrder(this, 'Smart Watch Series 9', 4579)">Confirm (WhatsApp)</button>
+              <button class="btn btn-cart" onclick="this.parentElement.parentElement.style.display='none'">Cancel</button>
+            </div>
+            <div class="confirmation-message"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="product" data-category="clothes" data-sku="tshirt-001" data-images="tshirt.jpg,tshirt2.jpg">
+        <div class="img-wrap">
+          <img src="tshirt.jpg" alt="Men’s Stylish T-Shirt" onclick="openQuickView(this)">
+        </div>
+        <div class="body">
+          <h3>Men’s Stylish T-Shirt</h3>
+          <div class="muted">Cotton, Comfortable fit</div>
+          <div class="price">Rs. 999</div>
+          <div class="toggle-desc" onclick="toggleDescription(this)"><span>Show Details</span> 🔽</div>
+          <div class="product-description"><p>• Sizes: S, M, L, XL • Color: Black, White, Grey</p></div>
+          <div class="actions">
+            <button class="btn btn-order" onclick="showAddressForm(this)">Order Now</button>
+            <button class="btn btn-cart" onclick="addToCart(this)">➕ Add to Cart</button>
+          </div>
+          <div class="address-form">
+            <input type="text" placeholder="Your Name" class="name-input">
+            <input type="number" placeholder="Phone Number" class="phone-input">
+            <input type="number" placeholder="Alt Phone (optional)" class="second-phone-input">
+            <input type="text" placeholder="Full Address" class="address-input">
+            <input type="text" placeholder="Landmark / Area" class="landmark-input">
+            <input type="number" placeholder="Quantity" class="quantity-input" value="1" min="1">
+            <input type="text" placeholder="Enter Size (e.g. M)" class="size-input">
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-order" onclick="sendOrder(this, 'Men\\'s Stylish T-Shirt', 999)">Confirm (WhatsApp)</button>
+              <button class="btn btn-cart" onclick="this.parentElement.parentElement.style.display='none'">Cancel</button>
+            </div>
+            <div class="confirmation-message"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="product" data-category="islam" data-sku="tasbeeh-001" data-images="tasbeeh.jpg">
+        <div class="img-wrap">
+          <img src="tasbeeh.jpg" alt="Digital Tasbeeh Counter" onclick="openQuickView(this)">
+        </div>
+        <div class="body">
+          <h3>Digital Tasbeeh Counter</h3>
+          <div class="muted">Easy counting, portable</div>
+          <div class="price">Rs. 1,299</div>
+          <div class="toggle-desc" onclick="toggleDescription(this)"><span>Show Details</span> 🔽</div>
+          <div class="product-description"><p>• Lightweight • LCD display • Precise counting</p></div>
+          <div class="actions">
+            <button class="btn btn-order" onclick="showAddressForm(this)">Order Now</button>
+            <button class="btn btn-cart" onclick="addToCart(this)">➕ Add to Cart</button>
+          </div>
+          <div class="address-form">
+            <input type="text" placeholder="Your Name" class="name-input">
+            <input type="number" placeholder="Phone Number" class="phone-input">
+            <input type="number" placeholder="Alt Phone (optional)" class="second-phone-input">
+            <input type="text" placeholder="Full Address" class="address-input">
+            <input type="text" placeholder="Landmark / Area" class="landmark-input">
+            <input type="number" placeholder="Quantity" class="quantity-input" value="1" min="1">
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-order" onclick="sendOrder(this, 'Digital Tasbeeh Counter', 1299)">Confirm (WhatsApp)</button>
+              <button class="btn btn-cart" onclick="this.parentElement.parentElement.style.display='none'">Cancel</button>
+            </div>
+            <div class="confirmation-message"></div>
+          </div>
+        </div>
+      </article>
+
+      
+
+      <article class="product" data-category="bags" data-sku="bag-001" data-images="bag.jpg,bag2.jpg">
+        <div class="img-wrap">
+          <img src="bag.jpg" alt="Luxury Ladies Handbag" onclick="openQuickView(this)">
+        </div>
+        <div class="body">
+          <h3>Luxury Ladies Handbag</h3>
+          <div class="muted">Stylish & Durable</div>
+          <div class="price">Rs. 2,499</div>
+          <div class="toggle-desc" onclick="toggleDescription(this)"><span>Show Details</span> 🔽</div>
+          <div class="product-description"><p>• Material: Faux leather • Spacious • Multiple pockets</p></div>
+          <div class="actions">
+            <button class="btn btn-order" onclick="showAddressForm(this)">Order Now</button>
+            <button class="btn btn-cart" onclick="addToCart(this)">➕ Add to Cart</button>
+          </div>
+          <div class="address-form">
+            <input type="text" placeholder="Your Name" class="name-input">
+            <input type="number" placeholder="Phone Number" class="phone-input">
+            <input type="number" placeholder="Alt Phone (optional)" class="second-phone-input">
+            <input type="text" placeholder="Full Address" class="address-input">
+            <input type="text" placeholder="Landmark / Area" class="landmark-input">
+            <input type="number" placeholder="Quantity" class="quantity-input" value="1" min="1">
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-order" onclick="sendOrder(this, 'Luxury Ladies Handbag', 2499)">Confirm (WhatsApp)</button>
+              <button class="btn btn-cart" onclick="this.parentElement.parentElement.style.display='none'">Cancel</button>
+            </div>
+            <div class="confirmation-message"></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div id="no-results">❌ Product not found. Try another search or <a href="https://wa.me/923291504030" target="_blank">WhatsApp us</a>.</div>
+
+    <!-- DELIVERY NOTE -->
+    <div style="margin:20px 0;padding:14px;background:var(--card);border-radius:8px;display:flex;align-items:center;gap:12px;justify-content:space-between">
+      <div>
+        <strong>🚚 Fast Delivery</strong>
+        <div class="muted">We deliver across Pakistan & UAE. Estimated: <strong>3 to 6 working days</strong>. Cash on Delivery available.</div>
+      </div>
+      <div style="font-size:14px;color:#0b5560;font-weight:700">Contact: <a href="https://wa.me/923291504030" target="_blank">+92 329 1504030</a></div>
+    </div>
+  </main>
+
+  <!-- MINI-CART (drawer) -->
+  <div id="miniCart" aria-hidden="true">
+    <h4>Your Cart</h4>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div style="display:flex;justify-content:space-between"><strong>Total</strong><strong id="cartTotal">Rs. 0</strong></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-order" onclick="checkoutCart()">Checkout  </button>
+        <button class="btn btn-cart" onclick="clearCart()">Clear Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick View Modal (carousel) -->
+  <div id="quickViewModal" onclick="closeQuickView(event)">
+    <div class="close-modal" onclick="closeQuickView(event)">✕</div>
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="carousel">
+        <img id="carouselMain" src="" alt="">
+        <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+          <button onclick="prevCarousel()" class="btn btn-cart">❮</button>
+          <div class="thumbs" id="carouselThumbs"></div>
+          <button onclick="nextCarousel()" class="btn btn-cart">❯</button>
+        </div>
+      </div>
+      <div class="modal-info">
+        <h3 id="modalTitle"></h3>
+        <div class="muted" id="modalDesc"></div>
+        <div class="price" id="modalPrice"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-order" id="modalOrderBtn">Order (WhatsApp)</button>
+          <button class="btn btn-cart" id="modalAddCartBtn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE MODAL (full) fallback -->
+  <div id="imgModal" onclick="closeModal()" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:20px">
+    <span class="close" onclick="closeModal()">✕</span>
+    <img id="modalImage" src="" alt="" style="max-width:95%;max-height:85%;border-radius:8px">
+    <div id="caption" style="color:#fff;margin-top:8px;text-align:center"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 14px">
+    <footer>
+      &copy; 2025 Samo1596 Online Store. All rights reserved. <br>
+      Follow us:
+      <a href="https://www.instagram.com/ch_sami1596/" target="_blank">Instagram</a> |
+      <a href="https://wa.me/923291504030" target="_blank">WhatsApp</a>|
+      <button onclick="openPrivacy()" 
+            style="background:none; border:none; color:#ff9900; cursor:pointer; font-weight:bold;">
+      Privacy Policy
+    </button>
+  </footer>
+</div>
+
+<!-- 🔒 Privacy Policy Modal -->
+<div id="privacyModal" 
+     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background:#fff; max-width:600px; width:90%; padding:25px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.2); text-align:left; font-size:16px; line-height:1.6; color:#333;">
+    <h2 style="text-align:center; color:#232f3e;">Privacy Policy</h2>
+    <p>We value your privacy. Any personal information you provide while ordering — including your name, phone number, address, and order details — will only be used to process your order and deliver your product.</p>
+    <p>We never share your information with third parties or use it for marketing without your permission.</p>
+    <p>If you have any questions about how we use your data, feel free to contact us through our 
+      <a href="https://wa.me/923291504030?text=Hi,+I+want+to+ask+about+your+Privacy+Policy" 
+         target="_blank" 
+         style="color:#25D366; font-weight:bold; text-decoration:none;">
+        WhatsApp support 💬
+      </a>.
+    </p>
+    <div style="text-align:center; margin-top:20px;">
+      <button onclick="closePrivacy()" 
+              style="background:#ff9900; color:white; border:none; padding:10px 25px; border-radius:8px; cursor:pointer;">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 🔧 JavaScript -->
+<script>
+  function openPrivacy() {
+    document.getElementById('privacyModal').style.display = 'flex';
+  }
+  function closePrivacy() {
+    document.getElementById('privacyModal').style.display = 'none';
+  }
+</script> 
+      
+    </footer>
+  </div>
+  <!-- 🔙 Back Button -->
+  <button class="back-btn" onclick="window.history.back();" title="Go back">←</button>
+ <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ffa41c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 999;
+  " title="Go to top">↑</button>
+
+  <!-- -------------------------- SCRIPT (JS) -------------------------- -->
+  <script>
+  /**************************
+   *  Utils & State
+   **************************/
+  const PHONE_NUMBER = '923291504030'; // seller WhatsApp
+  let cart = JSON.parse(localStorage.getItem('samo_cart') || '[]'); // [{sku,title,price,qty,image}]
+  let currentCarousel = {images:[],index:0,sku:''};
+
+  /* -------------------- Dark mode -------------------- */
+  function applyTheme(theme){
+    if(theme === 'dark') document.documentElement.setAttribute('data-theme','dark');
+    else document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('samo_theme', theme);
+    document.getElementById('darkToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+  function toggleDark(){
+    const current = localStorage.getItem('samo_theme') || 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  } 
+  /* -------------------- Typing welcome -------------------- */
+  const message = "Welcome to Samo1596 – Stylish shopping starts here! ✨";
+  let idx = 0;
+  function typeWriter(){ if(idx < message.length){ document.getElementById("welcome-text").innerHTML += message.charAt(idx); idx++; setTimeout(typeWriter,40);} }
+
+  /* -------------------- Show/hide order form -------------------- */
+  function showAddressForm(button) {
+    const form = button.parentElement.parentElement.querySelector('.address-form');
+    form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    if(form.style.display === 'block') form.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  /* -------------------- Send order (WhatsApp) -------------------- */
+  function sendOrder(button, productName, price) {
+    const form = button.closest('.address-form');
+    const name = form.querySelector('.name-input').value.trim();
+    const phone = form.querySelector('.phone-input').value.trim();
+    const phone2 = form.querySelector('.second-phone-input').value.trim();
+    const address = form.querySelector('.address-input').value.trim();
+    const landmark = form.querySelector('.landmark-input').value.trim();
+    const quantity = form.querySelector('.quantity-input').value.trim();
+    const sizeInput = form.querySelector('.size-input');
+    const size = sizeInput ? sizeInput.value.trim() : '';
+
+    const productEl = button.closest('.product');
+    const productImageEl = productEl.querySelector('img');
+    const productImage = productImageEl ? (location.origin + '/' + productImageEl.getAttribute('src')) : '';
+
+    if (!name || !phone || !quantity || !address) {
+      alert("Please fill in Name, Phone, Address, and Quantity before placing the order.");
+      return;
+    }
+    const total = Number(price) * Number(quantity);
+
+    const message = `*Order Details:*\n\n*Product*: ${productName}\n*Price*: Rs. ${price}\n*Quantity*: ${quantity}\n*Total*: Rs. ${total}${size ? `\n*Size*: ${size}` : ''}\n\n*Name*: ${name}\n*Phone*: ${phone}\n*Alt Phone*: ${phone2}\n*Address*: ${address}\n*Landmark*: ${landmark}\n\n*Payment Method:* Cash on Delivery\n\n*Product Image*: ${productImage}`;
+
+    const whatsappLink = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappLink, '_blank');
+
+    const confirmationBox = form.querySelector('.confirmation-message');
+    confirmationBox.style.display = 'block';
+    confirmationBox.innerHTML = `
+      <strong>✅ Order Confirmed!</strong><br>
+      <b>Product:</b> ${productName}<br>
+      <b>Quantity:</b> ${quantity}<br>
+      <b>Total:</b> Rs. ${total}<br><br>
+      We will contact you on WhatsApp to confirm delivery time. Estimated delivery: <strong>3 to 6 working days</strong>.<br>
+      Thank you for shopping with Samo1596! 💖
+    `;
+
+    // update cart counter visually
+    const cartCount = document.getElementById('cartCount');
+    cartCount.textContent = Number(cartCount.textContent || 0) + Number(quantity);
+  }
+
+  /* -------------------- Filter Products -------------------- */
+  function filterProducts(category) {
+    const products = document.querySelectorAll('.product');
+    let matchFound = false;
+    products.forEach(product => {
+      const productCategory = product.getAttribute('data-category') || '';
+      if (category === 'all' || productCategory === category) {
+        product.style.display = 'flex'; matchFound = true;
+      } else { product.style.display = 'none'; }
+    });
+    // active button toggle
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === (category === 'all' ? 'all' : category));
+    });
+    document.getElementById('no-results').style.display = matchFound ? 'none' : 'block';
+  }
+
+  /* -------------------- Description toggle -------------------- */
+  function toggleDescription(toggleBtn) {
+    const descriptionDiv = toggleBtn.nextElementSibling;
+    if (!descriptionDiv) return;
+    if (descriptionDiv.style.display === "block") {
+      descriptionDiv.style.display = "none"; toggleBtn.innerHTML = `<span>Show Details</span> 🔽`;
+    } else {
+      descriptionDiv.style.display = "block"; toggleBtn.innerHTML = `<span>Hide Details</span> 🔼`;
+    }
+  }
+
+  /* -------------------- Quick View Modal + Carousel -------------------- */
+  function openQuickView(imgEl){
+    const product = imgEl.closest('.product');
+    const imagesAttr = product.getAttribute('data-images');
+    const images = imagesAttr ? imagesAttr.split(',').map(s => s.trim()) : [imgEl.src];
+    const title = product.querySelector('h3').innerText;
+    const price = product.querySelector('.price').innerText.replace(/[^\d]/g,'') || '0';
+    const desc = (product.querySelector('.product-description')||{innerText:''}).innerText;
+
+    currentCarousel.images = images;
+    currentCarousel.index = 0;
+    currentCarousel.sku = product.getAttribute('data-sku') || '';
+
+    document.getElementById('carouselMain').src = images[0];
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalPrice').innerText = 'Rs. ' + price;
+    document.getElementById('modalDesc').innerText = desc;
+
+    // build thumbs
+    const thumbs = document.getElementById('carouselThumbs');
+    thumbs.innerHTML = '';
+    images.forEach((img, i) => {
+      const t = document.createElement('img');
+      t.src = img;
+      t.dataset.index = i;
+      t.onclick = () => { setCarousel(i); };
+      if(i===0) t.classList.add('active');
+      thumbs.appendChild(t);
+    });
+
+    // buttons
+    document.getElementById('modalOrderBtn').onclick = () => {
+      // open small order form flow using whatsapp with minimal info
+      const message = `Hi! I want to order: ${title} - Price: Rs. ${price}. Please confirm availability.`;
+      window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+    };
+    document.getElementById('modalAddCartBtn').onclick = () => {
+      addToCartFromQuickView(title, price, images[0], currentCarousel.sku);
+    };
+
+    document.getElementById('quickViewModal').style.display = 'flex';
+  }
+  function setCarousel(i){
+    currentCarousel.index = i;
+    document.getElementById('carouselMain').src = currentCarousel.images[i];
+    const thumbs = document.querySelectorAll('#carouselThumbs img');
+    thumbs.forEach(t => t.classList.toggle('active', Number(t.dataset.index) === i));
+  }
+  function prevCarousel(){ setCarousel((currentCarousel.index - 1 + currentCarousel.images.length) % currentCarousel.images.length); }
+  function nextCarousel(){ setCarousel((currentCarousel.index + 1) % currentCarousel.images.length); }
+  function closeQuickView(e){ if(e && e.target && e.target.id === 'quickViewModal'){ document.getElementById('quickViewModal').style.display='none'; } else document.getElementById('quickViewModal').style.display='none'; }
+
+  /* -------------------- Mini Cart -------------------- */
+  function saveCart(){ localStorage.setItem('samo_cart', JSON.stringify(cart)); renderCart(); }
+  function loadCart(){ cart = JSON.parse(localStorage.getItem('samo_cart') || '[]'); renderCart(); }
+
+  function addToCart(btn){
+    const productEl = btn.closest('.product');
+    const sku = productEl.getAttribute('data-sku') || productEl.querySelector('h3').innerText;
+    const title = productEl.querySelector('h3').innerText;
+    const priceText = productEl.querySelector('.price').innerText || '';
+    const price = Number((priceText.match(/\d+/g)||[]).join('')) || 0;
+    const img = productEl.querySelector('img').getAttribute('src');
+
+    const existing = cart.find(i => i.sku === sku);
+    if(existing){ existing.qty = Number(existing.qty) + 1; }
+    else { cart.push({sku,title,price,qty:1,image:img}); }
+
+    saveCart();
+    showCartToast(`${title} added to cart`);
+  }
+
+  function addToCartFromQuickView(title, price, image, sku){
+    const numericPrice = Number((String(price).match(/\d+/g)||[]).join('')) || Number(price) || 0;
+    const existing = cart.find(i => i.sku === sku);
+    if(existing) existing.qty = Number(existing.qty) + 1;
+    else cart.push({sku:sku || title, title, price: numericPrice, qty:1, image});
+    saveCart();
+    showCartToast(`${title} added to cart`);
+  }
+
+  function renderCart(){
+    const container = document.getElementById('cartItems');
+    container.innerHTML = '';
+    let total = 0;
+    cart.forEach((item, idx) => {
+      total += item.price * item.qty;
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <img src="${item.image}" alt="${item.title}">
+        <div class="meta">
+          <b>${item.title}</b>
+          <div>Rs. ${item.price} x <input type="number" min="1" value="${item.qty}" style="width:56px" onchange="updateQty(${idx}, this.value)"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
+          <button class="btn btn-cart" onclick="removeCartItem(${idx})">Remove</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+    document.getElementById('cartTotal').innerText = 'Rs. ' + total;
+    document.getElementById('cartCount').textContent = cart.reduce((s,i) => s + Number(i.qty), 0);
+  }
+
+  function updateQty(index, val){
+    cart[index].qty = Number(val);
+    saveCart();
+  }
+
+  function removeCartItem(index){
+    cart.splice(index,1);
+    saveCart();
+  }
+
+  function clearCart(){
+    if(!confirm('Clear cart items?')) return;
+    cart = [];
+    saveCart();
+  }
+
+  function toggleMiniCart(){
+    const el = document.getElementById('miniCart');
+    el.classList.toggle('open');
+    el.setAttribute('aria-hidden', el.classList.contains('open') ? 'false' : 'true');
+  }
+
+  /* -------------------- Checkout Cart via WhatsApp -------------------- */
+  function checkoutCart(){
+    if(cart.length === 0){ alert('Your cart is empty.'); return; }
+    // Build message
+    let lines = ['*Order from Samo1596*', ''];
+    let total = 0;
+    cart.forEach(i => {
+      lines.push(`${i.title} — Rs. ${i.price} x ${i.qty} = Rs. ${i.price * i.qty}`);
+      total += i.price * i.qty;
+    });
+    lines.push('', `*Total*: Rs. ${total}`, '', 'Please deliver to: (Enter name, phone, address after opening chat)');
+    const message = lines.join('\n');
+    const whatsappLink = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappLink, '_blank');
+  }
+
+  /* -------------------- Search -------------------- */
+  function searchFromNavbar(){ const q = document.getElementById('mainSearch').value.trim().toLowerCase(); searchProducts(q); }
+  function searchProducts(q){ const query = (q !== undefined) ? q : document.getElementById('mainSearch').value.toLowerCase(); const products = document.querySelectorAll('.product'); let match=false; products.forEach(p=>{ const name = p.querySelector('h3').innerText.toLowerCase(); if(name.includes(query) || query===''){ p.style.display='flex'; match=true } else p.style.display='none'; }); document.getElementById('no-results').style.display = match ? 'none' : 'block'; }
+
+  /* -------------------- Basic Image modal fallback -------------------- */
+  function openModal(imgElement) { var modal = document.getElementById("imgModal"); var modalImg = document.getElementById("modalImage"); var caption = document.getElementById("caption"); modal.style.display = "flex"; modalImg.src = imgElement.src; caption.innerHTML = imgElement.alt; }
+  function closeModal() { var modal = document.getElementById("imgModal"); modal.style.display = "none"; }
+
+  /* -------------------- Init -------------------- */
+  document.addEventListener('DOMContentLoaded', () => {
+    // theme
+    const savedTheme = localStorage.getItem('samo_theme') || 'light';
+    applyTheme(savedTheme);
+
+    // typing
+    typeWriter();
+
+    // init cart
+    loadCart();
+
+    // live search
+    document.getElementById('mainSearch').addEventListener('input', (e) => searchProducts(e.target.value.toLowerCase()) );
+
+    // initial show all
+    filterProducts('all');
+  });
+
+  /* -------------------- small toast message for cart add -------------------- */
+  function showCartToast(text){
+    const t = document.createElement('div');
+    t.style.position='fixed'; t.style.bottom='24px'; t.style.left='50%'; t.style.transform='translateX(-50%)'; t.style.background='#111'; t.style.color='#fff'; t.style.padding='10px 14px'; t.style.borderRadius='8px'; t.style.zIndex=4000; t.style.opacity='0'; t.style.transition='opacity .2s';
+    t.innerText = text;
+    document.body.appendChild(t);
+    setTimeout(()=> t.style.opacity='1',10);
+    setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>document.body.removeChild(t),220); },1600);
+  }
+  </script>
+</body>
+</html>
